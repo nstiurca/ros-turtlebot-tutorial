@@ -2,19 +2,18 @@
 import rospy
 from geometry_msgs.msg import Twist
 
-def slow_and_steady():
+def spin():
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
-    rospy.init_node('slow_and_teady', anonymous=False)
+    rospy.init_node('spin', anonymous=False)
     rate = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
         twist = Twist()
-        twist.linear.x = 0.25
-        twist.angular.z = rospy.get_param('~spin_rate', 0.0)
+        twist.angular.z = rospy.get_param('~spin_rate')
         pub.publish(twist)
         rate.sleep()
 
 if __name__ == '__main__':
     try:
-        slow_and_steady()
+        spin()
     except rospy.ROSInterruptException:
         pass
